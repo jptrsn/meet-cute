@@ -18,7 +18,8 @@
         "contentPage.js"
       ],
       "matches": [
-        "<all_urls>"
+        "https://meet.google.com/*",
+        "https://hangouts.google.com/*"
       ]
     }
   ],

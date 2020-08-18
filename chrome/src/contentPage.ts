@@ -1,33 +1,39 @@
-chrome.runtime.onMessage.addListener((request, sender, respond) => {
-  const handler = new Promise((resolve, reject) => {
-    if (request) {
-      resolve(`Hi from contentPage! You are currently on: ${window.location.href}`);
-    } else {
-      reject('request is empty.');
-    }
-  });
-
-  handler.then(message => respond(message)).catch(error => respond(error));
-
-  return true;
-});
-
 const url = location.href;
-if (url.match("meet.google.com")) {
+
+if (document.querySelector('body').classList.contains('__mDlS__')) {
+  console.warn('already exists');
+} else {
+  
   chrome.runtime.sendMessage({
-    type: 'meetTab'
+    type: 'meetTab',
+    url
   });
-  let hasVideo = false;
+  
+
+  let onHoldSelector, onPageSelector;
+  if (url.match('meet.google.com')) {
+    onHoldSelector = '#yDmH0d > c-wiz > div > div > div:nth-child(4) > div.crqnQb > div > div.vgJExf > div > div > div.oORaUb.NONs6c';
+    onPageSelector = '[data-allocation-index]';
+  } else if (url.match('hangouts.google.com/call')) {
+    onHoldSelector = '#yDmH0d > div.WOi1Wb > div.GhN39b > div > div > div.ECPdDc > div.F1FBvf > div > span > span';
+    // TODO: Improve onPageSelector to differentiate between when you are alone and when other users are in the hangout.
+    onPageSelector = '#yDmH0d > div.WOi1Wb > div.qMwJZe > div';
+  }
+
+  let onAir = false;
+  let onHold = false;
   setInterval(() => {
-    // Find the UI elements we need to modify. If they don't exist we haven't entered the meeting yet and will try again later
-    const participantVideo = document.querySelector('[data-allocation-index]')
-    const videoOnPage = !!(participantVideo && participantVideo.parentElement)
-    if (videoOnPage !== hasVideo) {
-      hasVideo = videoOnPage;
+    const videoOnHold = !!(document.querySelector(onHoldSelector));
+    const videoOnPage = !!(document.querySelector(onPageSelector))
+    if (videoOnHold !== onHold || videoOnPage !== onAir) {
+      onAir = videoOnPage;
+      onHold = videoOnHold;
       chrome.runtime.sendMessage({
         type: 'meetStatus',
-        videoOnPage
+        onAir,
+        onHold
       });
     }
-  }, 1000)
+  }, 1000);
+  document.querySelector('body').classList.add('__mDlS__');
 }
