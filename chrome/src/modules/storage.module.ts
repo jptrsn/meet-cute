@@ -1,14 +1,16 @@
-export class States {
+export class Storage {
 
+    storage: chrome.storage.LocalStorageArea | chrome.storage.SyncStorageArea;
     values: any;
-    constructor() {
+    constructor(storename?: 'local' | 'sync') {
+        this.storage = storename ? chrome.storage[storename] : chrome.storage.local;
         this.loadStorage_();
     }
 
     private async loadStorage_() {
         const _this = this;
         return new Promise((resolve, reject) => {
-            chrome.storage.local.get((items) => {
+            _this.storage.get((items) => {
                 _this.values = Object.assign({}, _this.values, items);
                 resolve(_this.values);
             });
@@ -23,8 +25,7 @@ export class States {
             if (this.values[key]) {
                 return this.values[key];
             } else {
-                console.log(`getting ${key} from local storage`);
-                return chrome.storage.local.get([key],(items) => {
+                return this.storage.get([key],(items) => {
                     return items[key];
                 });
             }
@@ -39,6 +40,6 @@ export class States {
         this.values[key] = value;
         const d = {};
         d[key] = value;
-        chrome.storage.local.set(d);
+        this.storage.set(d);
     }
 }

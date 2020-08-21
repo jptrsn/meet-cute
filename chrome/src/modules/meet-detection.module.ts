@@ -18,7 +18,7 @@ export class MeetDetection {
             if (this.tabs[tabId]) {
                 console.log('detected tab closed', this.tabs[tabId]);
                 delete this.tabs[tabId];
-                this.status$.next('idle');
+                this.status$.next('offline');
             }
         });
     }
