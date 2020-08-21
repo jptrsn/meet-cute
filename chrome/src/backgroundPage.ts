@@ -1,8 +1,23 @@
 import { MeetDetection } from './modules/meet-detection.module'
+import { HomeAssistant } from './modules/home-assistant.module'
+import { WledControl } from './modules/wled-control.module';
 // console.log('Background page');
 const meetDetection = new MeetDetection();
+// const homeAssistant = new HomeAssistant();
+const light = new WledControl({ip: 'wled-meet.local'});
 
-meetDetection.getStatus().subscribe(console.log);
+light.getState().then(console.log);
+
+meetDetection.getStatus().subscribe((status) => {
+  switch(status) {
+    case 'idle': 
+      break;
+      case 'on-hold':
+        break;
+        case 'on-air':
+          break;
+  }
+});
 
 window.chrome.runtime.onMessage.addListener((
     request,
