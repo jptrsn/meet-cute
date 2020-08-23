@@ -41,7 +41,6 @@ export class WledControl {
     setState(json: State) {
         const url = `http://${this.ip}/json/state`;
         return this.req.send({method: 'POST', url, body: json}).then((state) => {
-            console.log('setState result', state);
             return state;
         }).catch((e) => {
             return {error: e.message};
@@ -54,9 +53,10 @@ export class WledControl {
     }
 
     async applySavedState(name: string) {
+        console.log('applySavedState', name);
         const state = await this.vars.get(`state_${name}`);
         if (state) {
-            this.setState(state);
+            return this.setState(state);
         } else if (defaultStates[name]) {
             this.setState(defaultStates[name]);
         } else {

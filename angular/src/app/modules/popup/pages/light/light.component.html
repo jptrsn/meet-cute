@@ -21,15 +21,17 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <form *ngIf="stateCtrl.value !== ''">
-                    <button mat-button mat-raised-button (click)="viewState()">
-                        View
-                    </button>
-                    <button mat-button mat-raised-button (click)="saveState()">
-                        Save
-                    </button>
-                </form>
             </div>
         </mat-card-content>
+        <mat-card-actions align="end">
+            <form *ngIf="stateCtrl.value !== ''">
+                <button mat-button mat-raised-button (click)="viewState()">
+                    View
+                </button>
+                <button mat-button mat-raised-button (click)="saveState()">
+                    Save
+                </button>
+            </form>
+        </mat-card-actions>
     </mat-card>
 </div>

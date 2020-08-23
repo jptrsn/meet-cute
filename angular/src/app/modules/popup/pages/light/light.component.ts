@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { WledService } from '../../services/wled.service';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,7 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-light',
   templateUrl: './light.component.html',
-  styleUrls: ['./light.component.scss']
+  styleUrls: ['./light.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LightComponent implements OnInit, OnDestroy {
 

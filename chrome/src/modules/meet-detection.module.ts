@@ -7,6 +7,7 @@ export class MeetDetection {
     private status$: BehaviorSubject<string>;
     private store: Storage;
     private activityDetection: false;
+    private activeTabId: string;
 
     constructor() {
         this.store = new Storage('local');
@@ -51,11 +52,11 @@ export class MeetDetection {
     listenForTabRemove() {
         window.chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
             if (this.activityDetection) {
+                this.status = null;
                 chrome.idle.queryState(15, ((state) => this.idleStateListener(state)));
             } else {
                 this.status$.next('idle');
             }
-            
         });
     }
 
@@ -76,6 +77,7 @@ export class MeetDetection {
 
     handleTab(request, tab) {
         console.log('handleMeetTab', request, tab);
+        this.status$.next('on-hold');
     }
 
     getStatusObservable() {

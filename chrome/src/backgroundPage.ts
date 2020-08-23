@@ -36,7 +36,7 @@ window.chrome.runtime.onMessage.addListener((
     sender,
     sendResponse
   ) => {
-    // console.log('GOT req', request);
+    console.log('GOT req', request);
     switch (request.type) {
       case 'meetTab':
         meetDetection.handleTab(request, sender.tab);
