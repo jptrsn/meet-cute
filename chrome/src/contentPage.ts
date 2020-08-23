@@ -25,6 +25,7 @@ if (document.querySelector('body').classList.contains('__mDlS__')) {
   setInterval(() => {
     const videoOnHold = !!(document.querySelector(onHoldSelector));
     const videoOnPage = !!(document.querySelector(onPageSelector))
+    console.log({videoOnHold, videoOnPage});
     if (videoOnHold !== onHold || videoOnPage !== onAir) {
       onAir = videoOnPage;
       onHold = videoOnHold;

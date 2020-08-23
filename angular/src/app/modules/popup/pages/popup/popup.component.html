@@ -1,7 +1,18 @@
 <div class="popup">
-  <h3>Meet Cute!</h3>
-  <div class="input-container">
-    <label>WLED address</label>
-    <input type="text" [formControl]="ipCtrl">
-  </div>
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon matTooltip="Extension Settings">settings</mat-icon>
+      </ng-template>
+      <ng-template matTabContent>
+        <app-settings></app-settings>
+      </ng-template>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon matTooltip="Light States">lightbulb</mat-icon>
+      </ng-template>
+      <app-light></app-light>
+    </mat-tab>
+  </mat-tab-group>
 </div>

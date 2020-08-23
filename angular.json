@@ -28,6 +28,7 @@
               "angular/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "angular/src/styles.scss"
             ],
             "scripts": []

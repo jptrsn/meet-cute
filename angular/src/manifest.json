@@ -1,16 +1,20 @@
 {
   "manifest_version": 2,
   "name": "meet-cute",
-  "short_name": "meet-cute",
-  "version": "1.0.0",
-  "description": "Generated with @larscom/ng-chrome-extension",
+  "short_name": "Meet Cute",
+  "version": "0.0.1",
+  "description": "A cute little helper for your meetings.",
   "permissions": [
     "tabs",
-    "storage"
+    "storage",
+    "idle"
   ],
   "browser_action": {
     "default_popup": "index.html?#/popup",
-    "default_title": "Angular Chrome Extension"
+    "default_title": "Meet Cute",
+    "default_icon": {                    
+      "16": "./assets/batch_prediction.png"
+    }
   },
   "options_page": "index.html?#/options",
   "content_scripts": [

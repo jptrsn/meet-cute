@@ -27,7 +27,8 @@ export class Req {
                 let r = new XMLHttpRequest();
                 let url = request.url;
                 if (request.query) {
-
+                    // TODO: Add query parameter handling
+                    throw new Error("Method not yet implemented");
                 }
                 r.open(request.method, url, true);
                 r.onreadystatechange = function() {
@@ -36,9 +37,7 @@ export class Req {
                     }
                 };
                 r.onerror = function() {
-                    console.error('request error');
-                    console.log(r);
-                    reject();
+                    reject({message: 'Address unavailable'});
                 }
                 if (request.body) {
                     r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");

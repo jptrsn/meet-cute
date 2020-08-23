@@ -1,5 +1,21 @@
 .popup {
-    display: flex;
-    flex: auto;
-    flex-direction: column;
+    width: 233px;
+    height: 100%;
+
+    .mat-tab-label-container {
+        background-color: rgb(66,66,66);
+    }
+    /* Styles for tab labels */
+    .mat-tab-label {
+        padding: 5px 8px;
+        min-width: 25px !important;
+        background: transparent;
+        color: white;
+        font-weight: 700;
+    }
+
+    /* Styles for the active tab label */
+    .mat-tab-label.mat-tab-label-active {        
+        color: grey;
+    }
 }
