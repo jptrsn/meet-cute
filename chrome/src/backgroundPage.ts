@@ -47,12 +47,10 @@ window.chrome.runtime.onMessage.addListener((
         sendResponse();
         break;
       case 'saveState':
-        light.saveState(request.name, request.state, request.apply);
-        sendResponse();
+        light.saveState(request.name);
         break;
       case 'applyState':
         light.applySavedState(request.name);
-        sendResponse();
         break;
       case 'getState':
         light.getState().then(sendResponse);
@@ -62,6 +60,9 @@ window.chrome.runtime.onMessage.addListener((
         return;
       case 'getLightDetails':
         light.getDetails().then(sendResponse);
+        return true;
+      case 'getLightSavedStates':
+        light.getSavedStates().then(sendResponse);
         return true;
       case 'getMeetDetectionConfig': 
         sendResponse(meetDetection.getConfig());

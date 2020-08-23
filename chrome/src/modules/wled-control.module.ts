@@ -3,8 +3,10 @@ import {Storage} from './storage.module';
 
 export class WledControl {
     ip: string;
-    req: Req;
-    vars: Storage;
+
+    private req: Req;
+    private vars: Storage;
+    
     constructor(ip?: string) {
         this.req = new Req();
         this.vars = new Storage('local');
@@ -46,15 +48,13 @@ export class WledControl {
         });
     }
 
-    saveState(name: string, state: State, apply?: boolean) {
-        this.vars.set(name, state);
-        if (apply) {
-            this.setState(state);
-        }
+    async saveState(name: string) {
+        const state = await this.getState();
+        this.vars.set(`state_${name}`, state);
     }
 
     async applySavedState(name: string) {
-        const state = await this.vars.get(name);
+        const state = await this.vars.get(`state_${name}`);
         if (state) {
             this.setState(state);
         } else if (defaultStates[name]) {
@@ -68,6 +68,19 @@ export class WledControl {
         const state = await this.getState();
         const address = this.ip;
         return {state, address};
+    }
+
+    async getSavedStates() {
+        const saved = await this.vars.get();
+        let rtn = {};
+        for (const k of Object.keys(defaultStates)) {
+            if (saved[`state_${k}`]) {
+                rtn[k] = saved[`state_${k}`];
+            } else {
+                rtn[k] = defaultStates[k];
+            }
+        }
+        return rtn;
     }
 }
 

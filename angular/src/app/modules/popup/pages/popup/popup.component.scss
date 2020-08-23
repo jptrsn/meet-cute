@@ -1,7 +1,5 @@
 .popup {
     width: 233px;
-    height: 100%;
-
     .mat-tab-label-container {
         background-color: rgb(66,66,66);
     }
@@ -17,5 +15,9 @@
     /* Styles for the active tab label */
     .mat-tab-label.mat-tab-label-active {        
         color: grey;
+    }
+
+    .mat-card {
+        min-height: 200px;
     }
 }
