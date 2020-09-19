@@ -6,8 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-light',
   templateUrl: './light.component.html',
-  styleUrls: ['./light.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./light.component.scss']
 })
 export class LightComponent implements OnInit, OnDestroy {
 

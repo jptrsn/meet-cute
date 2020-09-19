@@ -1,5 +1,4 @@
 import { MeetDetection } from './modules/meet-detection.module'
-import { HomeAssistant } from './modules/home-assistant.module'
 import { WledControl } from './modules/wled-control.module';
 // console.log('Background page');
 const meetDetection = new MeetDetection();
@@ -22,6 +21,9 @@ meetDetection.getStatusObservable().subscribe((status) => {
       case 'on-air':
         chrome.browserAction.setIcon({path: './assets/call.png'});
         break;
+      case 'locked':
+        chrome.browserAction.setIcon({path: './assets/batch_prediction.png'});
+        break;
       default:
         console.log('unhandled state icon', status);
         chrome.browserAction.setIcon({path: './assets/batch_prediction.png'});
@@ -36,7 +38,7 @@ window.chrome.runtime.onMessage.addListener((
     sender,
     sendResponse
   ) => {
-    console.log('GOT req', request);
+    // console.log('GOT req', request);
     switch (request.type) {
       case 'meetTab':
         meetDetection.handleTab(request, sender.tab);

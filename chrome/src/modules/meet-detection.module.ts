@@ -7,7 +7,7 @@ export class MeetDetection {
     private status$: BehaviorSubject<string>;
     private store: Storage;
     private activityDetection: false;
-    private activeTabId: string;
+    private meetTabs: number[];
 
     constructor() {
         this.store = new Storage('local');
@@ -17,6 +17,7 @@ export class MeetDetection {
         this.status$.subscribe((status) => {
             this.status = status;
         });
+        this.meetTabs = [];
     }
 
     configureForActivity() {
@@ -43,24 +44,32 @@ export class MeetDetection {
     }
 
     idleStateListener(state) {
-        console.log('idleStateListener', state);
-        if (this.status !== 'on-air') {
+        console.log('idleStateListener', state, this.meetTabs);
+        if (!this.meetTabs.length) {
             this.status$.next(state);
         }
     }
 
     listenForTabRemove() {
         window.chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
-            if (this.activityDetection) {
-                this.status = null;
-                chrome.idle.queryState(15, ((state) => this.idleStateListener(state)));
-            } else {
-                this.status$.next('idle');
+            if (this.meetTabs.indexOf(tabId) > -1) {
+                console.log('tab removed!');
+                this.meetTabs = this.meetTabs.filter((id) => id !== tabId);
+                console.log(this.meetTabs);
+                if (!this.meetTabs.length) {
+                    if (this.activityDetection) {
+                        this.status = null;
+                        chrome.idle.queryState(15, ((state) => this.idleStateListener(state)));
+                    } else {
+                        this.status$.next('idle');
+                    }
+                }
             }
         });
     }
 
     handleStatus(request, tab) {
+        console.log('handleStatus', tab.id);
         if (!request.onAir && !request.onHold && this.activityDetection) {
             return chrome.idle.queryState(15, (state) => {
                 this.status = null;
@@ -76,7 +85,8 @@ export class MeetDetection {
     }
 
     handleTab(request, tab) {
-        console.log('handleMeetTab', request, tab);
+        console.log('handleMeetTab', tab.id);
+        this.meetTabs.push(tab.id);
         this.status$.next('on-hold');
     }
 

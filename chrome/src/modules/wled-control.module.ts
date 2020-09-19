@@ -15,7 +15,6 @@ export class WledControl {
             this.vars.set('wled_ip', ip);
         } else {
             this.vars.get('wled_ip').then((ip) => {
-                console.log('got wled_ip', ip);
                 this.ip = ip;
             });
         }
