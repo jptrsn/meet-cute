@@ -38,6 +38,9 @@ export class WledControl {
     }
 
     setState(json: State) {
+        if (!this.ip) {
+            return;
+        }
         const url = `http://${this.ip}/json/state`;
         return this.req.send({method: 'POST', url, body: json}).then((state) => {
             return state;

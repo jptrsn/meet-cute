@@ -1,8 +1,11 @@
 import { MeetDetection } from './modules/meet-detection.module'
 import { WledControl } from './modules/wled-control.module';
+import { ShortcutsControl } from './modules/commands.module';
+
 // console.log('Background page');
 const meetDetection = new MeetDetection();
 const light = new WledControl();
+const shortcuts = new ShortcutsControl();
 
 meetDetection.getStatusObservable().subscribe((status) => {
   // console.log('status', status);
@@ -42,6 +45,7 @@ window.chrome.runtime.onMessage.addListener((
     switch (request.type) {
       case 'meetTab':
         meetDetection.handleTab(request, sender.tab);
+        shortcuts.addTab(sender.tab);
         sendResponse();
         break;
       case 'meetStatus':
@@ -79,6 +83,9 @@ window.chrome.runtime.onMessage.addListener((
       case 'getStatus':
         sendResponse(meetDetection.getStatus());
         return true;
+        case 'meetActions|connected':
+          shortcuts.tabListenerAdded(sender.tab);
+        return false;
       default:
         console.error(`unhandled request type ${request.type}`, request);
         break;
@@ -90,3 +97,8 @@ window.chrome.runtime.onMessage.addListener((
 const titleCase = (str: string) => {
   return str.toLowerCase().split('-').map((word) => (word.charAt(0).toUpperCase() + word.slice(1))).join(' ');
 }
+
+chrome.commands.onCommand.addListener(function(command) {
+  // console.log('Command:', command);
+  shortcuts.sendCommand(command);
+});

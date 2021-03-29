@@ -10,6 +10,32 @@
     "storage",
     "idle"
   ],
+  "commands": {
+    "raiseHand": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+PageUp",
+        "mac": "Command+Shift+PageUp"
+      },
+      "description": "Raise your hand",
+      "global": "true"
+    },
+    "toggleCaptions": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Home",
+        "mac": "Command+Shift+Home"
+      },
+      "description": "Toggle closed captions",
+      "global": "true"
+    },
+    "joinMeet": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+PageDown",
+        "mac": "Command+Shift+PageDown"
+      },
+      "description": "Instant meet",
+      "global": "true"
+    }
+  },
   "browser_action": {
     "default_popup": "index.html?#/popup",
     "default_title": "Meet Cute",
