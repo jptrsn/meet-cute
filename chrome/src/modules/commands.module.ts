@@ -9,24 +9,15 @@ export class ShortcutsControl {
         
     }
 
-    addTab(tab: chrome.tabs.Tab) {
-        if (tab.id in this.ports) {
-            console.log(`${tab.id} already in this.ports`, this.ports[tab.id]);
-            return;
-        }
-        this.ports[tab.id] = null;
-    }
-
     tabListenerAdded(tab: chrome.tabs.Tab) {
         const port = chrome.tabs.connect(tab.id);
         this.ports[tab.id] = port;
         port.onMessage.addListener(this.messageCallback_);
         port.onDisconnect.addListener((port) => {
-            console.log('port disconnected', port);
+            port.onMessage.removeListener(this.messageCallback_);
             delete this.ports[tab.id];
         })
         console.log('port listener added');
-        // port.postMessage('listenerAdded');
     }
 
     private messageCallback_ = (message, port: chrome.runtime.Port) => {
@@ -43,14 +34,13 @@ export class ShortcutsControl {
             url: 'https://meet.google.com',
             active: true
         }, (tab) => {
-            this.addTab(tab);
             this.portMessage$.pipe(
-                filter(({message, port}) => (message.message === 'listenerAdded' && message.key === 'newMeeting' && message.success)),
+                filter(({message, port}) => (message.message === 'listenerAdded' && message.key === command && message.success)),
                 take(1)
             ).subscribe(({message, port}) => {
                 if (command) {
                     port.postMessage(command);
-                    if (command === 'joinMeet') {
+                    if (command === 'newMeeting') {
                         this.portMessage$.pipe(
                             take(1)).subscribe((value) => {
                             console.log('starting instant')
@@ -63,12 +53,13 @@ export class ShortcutsControl {
     }
 
     sendCommand(command) {
+        console.log('send command', command);
         if (!Object.keys(this.ports).length) {
             const meetExp = new RegExp('https://meet.google.com');
             chrome.tabs.query({}, (tabs) => {
                 for (const tab of tabs) {
                     if (meetExp.test(tab.url)) {
-                        this.addTab(tab);
+                        this.tabListenerAdded(tab);
                         chrome.tabs.update(tab.id, {active: true, highlighted: true});
                         return true;
                     }

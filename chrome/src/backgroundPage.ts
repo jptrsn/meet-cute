@@ -45,7 +45,6 @@ window.chrome.runtime.onMessage.addListener((
     switch (request.type) {
       case 'meetTab':
         meetDetection.handleTab(request, sender.tab);
-        shortcuts.addTab(sender.tab);
         sendResponse();
         break;
       case 'meetStatus':

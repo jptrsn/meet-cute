@@ -11,7 +11,7 @@
     "idle"
   ],
   "commands": {
-    "raiseHand": {
+    "moreActions": {
       "suggested_key": {
         "default": "Ctrl+Shift+PageUp",
         "mac": "Command+Shift+PageUp"
@@ -27,7 +27,7 @@
       "description": "Toggle closed captions",
       "global": "true"
     },
-    "joinMeet": {
+    "newMeeting": {
       "suggested_key": {
         "default": "Ctrl+Shift+PageDown",
         "mac": "Command+Shift+PageDown"

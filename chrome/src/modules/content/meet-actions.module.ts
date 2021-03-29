@@ -2,8 +2,10 @@
 
 interface MeetControl {
     selector: string;
-    element: HTMLElement;
-    state?: boolean;
+    element?: HTMLElement;
+    children?: {
+        [key: string]: MeetControl;
+    }
 }
 export class MeetActions {
     
@@ -26,16 +28,38 @@ export class MeetActions {
     private readonly meetControls: {[key: string]: MeetControl } = {
         'raiseHand': {
             selector: '[aria-label="Raise hand"]',
-            state: null,
             element: null
         },
         'toggleCaptions': {
             selector: 'c-wiz > div > div > div:nth-child(9) > div:nth-child(3) > div:nth-child(9) > div:nth-child(3) > div:nth-child(2) > div',
             element: null
         },
-        'present': {
+        'presentNow': {
             selector: 'c-wiz > div > div > div:nth-child(9) > div:nth-child(3) > div:nth-child(9) > div:nth-child(3) > div:nth-child(3) > div',
             element: null
+        },
+        'moreActions': {
+            selector: 'c-wiz > div > div > div:nth-child(9) > div:nth-child(3) > div:nth-child(9) > div:nth-child(3) > div:nth-child(4) > div',
+            children: {
+                cast: {
+                    selector: 'body > div.JPdR6b.e5Emjc.CIYi0d.jvUMfb.yOCuXd.qjTEB > div > div > span:nth-child(1)'
+                },
+                whiteboard: {
+                    selector: 'body > div.JPdR6b.e5Emjc.CIYi0d.jvUMfb.yOCuXd.qjTEB > div > div > span:nth-child(2)'
+                },
+                changeLayout: {
+                    selector: 'body > div.JPdR6b.e5Emjc.CIYi0d.jvUMfb.yOCuXd.qjTEB > div > div > span:nth-child(3)'
+                },
+                fullScreen: {
+                    selector: 'body > div.JPdR6b.e5Emjc.CIYi0d.jvUMfb.yOCuXd.qjTEB > div > div > span:nth-child(4)'
+                },
+                changeBackground: {
+                    selector: 'body > div.JPdR6b.e5Emjc.CIYi0d.jvUMfb.yOCuXd.qjTEB > div > div > span:nth-child(5)'
+                },
+                settings: {
+                    selector: 'body > div.JPdR6b.e5Emjc.CIYi0d.jvUMfb.yOCuXd.qjTEB > div > div > span:nth-child(11)'
+                },
+            }
         },
         'chat': {
             selector: '[aria-label="Chat with everyone"]',
